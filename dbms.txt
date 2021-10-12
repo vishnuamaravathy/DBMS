@@ -1,0 +1,105 @@
+Create table EMPLOYEE(EMPLOYEE_ID varchar(5) NOT NULL PRIMARY KEY, EMP_FNAME varchar (20) NOT NULL, EMP_LNAME varchar(25) , DEPARTMENT varchar (30) ,PJT varchar(30),ADDRESS varchar(30),DOB date, GENDER varchar (6));
+Insert into EMPLOYEE VALUES('EMP01','ATHIRA','PRADEEP','TECHANICAL','PROJECTA','TRIVANDRUM','12-12-1998','FEMALE');
+Insert into EMPLOYEE VALUES('EMP02','RASIYA','ANASI','SALES','PROJECTB','KOCHI','01-02-1988','FEMALE');
+Insert into EMPLOYEE VALUES('EMP03','RAM','ANAND','MARKETING','PROJECTC','KOCHI','11-02-1993','MALE');
+Insert into EMPLOYEE
+VALUES('EMP04','VYSHAK','VIJAY','HUMAN RESOURCES','PROJECTD','TRIVANDRUM','10-05-1995','MALE');
+Insert into EMPLOYEE
+VALUES('EMP05','ASHWIN','KUMAR','HUMAN RESOURCES','PROJECTE','TRIVANDRUM','20-05-1994','MALE');
+Insert into EMPLOYEE VALUES('EMP06','SHIVANGI','AKASH','TECHANICAL','PROJECTA','TRIVANDRUM','22-08-1997','FEMALE');
+
+
+Create table EMPDESIG(EMPLOYEE_ID varchar(5) references EMPLOYEE(EMPLOYEE_ID) PRIMARY KEY,EMPLOYEE_POSITION varchar(30),DOJ date,SALARY int);
+Insert into EMPDESIG(‘EMP01’,’PROGRAMMER’,’05-05-2020’,30000);
+Insert into EMPDESIG(‘EMP02’,’SALESMAN’,’10-03-2018’,25000);
+Insert into EMPDESIG(‘EMP03’,’MANAGER’,’19-03-2017’,50000);
+Insert into EMPDESIG(‘EMP04’,’MANAGER’,’11-06-2012’,60000);
+Insert into EMPDESIG(‘EMP05’,’MANAGER’,’16-11-2019’,55000);
+Insert into EMPDESIG(‘EMP06’,’PROGRAMMER,’22-05-2012’,55000);
+Insert into EMPDESIG(‘EMP07’,’CLERK’,’20-03-2017’,35000);
+
+Select SALARY from EMPDESIG where EMPLOYEE_POSITION='CLERK' OR EMPLOYEE_POSITION='MANAGER';
+
+Select count(*) from EMPLOYEE where DEPARTMENT='HUMAN RESOURCES';
+
+SELECT SUBSTRING(EMP_LNAME,1,4) FROM employee ;
+
+SELECT * FROM EMPDESIG WHERE salary >=10000 AND salary <=40000;
+
+CREATE TABLE newemployee AS SELECT * FROM employee;
+Select * from newemployee;
+
+SELECT * FROM employee WHERE EMP_LNAME LIKE 'A%' and length(EMP_LNAME)=5;
+
+ALTER TABLE employeeADD Email varchar(255);
+SELECT emailFROM employeeWHERE NOT REGEXP_LIKE(email,’[A-Z0-9.-%+-]+@[A-Z0-9.-]+\.[A-Z]{2-4}’,’$’);
+
+SELECT * FROM EMPDESIG A WHERE 2= (SELECT COUNT(DISTINCT salary) FROM EMPDESIG B WHERE A.salary<=B.salary);
+
+
+
+
+To display the message welcome to plsql”.
+
+CREATE OR REPLACE PROCEDURE greetings AS BEGIN dbms_output.put_line(‘Welcome to plsql');
+END;
+/
+
+
+To check whether a given character is a letter or a digit.
+
+DECLARE
+get_ctr CHAR(1) := '&input_a_character';
+BEGIN
+IF ( get_ctr >= 'A'
+AND get_ctr <= 'Z' )
+OR ( get_ctr >= 'a'
+AND get_ctr <= 'z' ) THEN
+dbms_output.Put_line ('The given character is a letter');
+ELSE
+dbms_output.Put_line ('The given character is not a letter');
+IF get_ctr BETWEEN '0' AND '9' THEN
+dbms_output.Put_line ('The given character is a number');
+ELSE
+dbms_output.Put_line ('The given character is not a number');
+END IF;
+END IF;
+END;
+/
+
+
+Write a plsql program to check whether a given number is palindrome or not.
+
+declare
+n number;
+m number;
+rev number:=0;
+r number;
+begin
+n:=12321;
+m:=n;
+while n>0
+loop
+r:=mod(n,10);
+rev:=(rev*10)+r;
+n:=trunc(n/10);
+end loop;
+if m=rev
+then
+dbms_output.put_line('number is palindrome');
+else
+dbms_output.put_line('number is not palindrome');
+end if;
+end;
+/
+
+
+Write a PL/SQL block to calculate the incentive (20% of salary) of an employee whose emp_id is 10 using the above empdesig table.
+
+DECLARE
+incentive NUMBER;
+BEGIN
+SELECT salary * 0.20 INTO incentive FROM EMPDESIG WHERE employee_id = EMP01;
+DBMS_OUTPUT_LINE(‘Incentive =’|| TO_CHAR(incentive));\
+END;
+/
